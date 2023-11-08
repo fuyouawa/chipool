@@ -26,7 +26,7 @@ constexpr size_t kPageSize = 4096;
 constexpr uintptr_t kPageMask = ~0xFFFull;
 constexpr uint16_t kInvalidIdx = ~0;
 
-template<class T>
+template<typename T>
 struct SubPool {
 	union Chip {
 		std::conditional_t<sizeof(T) == 1, uint8_t, uint16_t> next_idx;
@@ -82,7 +82,7 @@ struct SubPool {
 	}
 };
 
-template<class T>
+template<typename T>
 constexpr bool is_valid_chip_v = (SubPool<T>::kUsableSize % sizeof(T)) == 0;
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -95,7 +95,7 @@ CHIPOOL_FORCE_INLINE void Deallocate(void* ptr) noexcept {
 #endif
 }
 
-template<class T>
+template<typename T>
 	requires detail::is_valid_chip_v<T>
 class Pool
 {
